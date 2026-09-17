@@ -41,7 +41,7 @@ scene.add(sun);
 
 const game = new Game(scene);
 (window as any).game = game; // debug handle
-game.start();
+game.showTitle();
 
 window.addEventListener('resize', () => {
   camera.aspect = innerWidth / innerHeight;

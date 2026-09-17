@@ -7,6 +7,8 @@ import { Pool } from './pool';
 import { spawnRate, hpScale, pickType } from './spawner';
 import * as hud from './hud';
 import { pickThree } from './upgrades';
+import { titleHtml } from './title';
+import { onAnyKey, clearAnyKey } from './input';
 
 export type State = 'title' | 'playing' | 'levelup' | 'dead';
 
@@ -36,6 +38,19 @@ export class Game {
     this.gems = new Pool(() => new Gem(scene), 120);
   }
 
+  showTitle() {
+    this.state = 'title';
+    hud.showOverlay(titleHtml());
+    hud.overlay.classList.add('is-title');
+    clearAnyKey();
+    onAnyKey(() => {
+      if (this.state !== 'title') return;
+      clearAnyKey();
+      hud.overlay.classList.remove('is-title');
+      this.start();
+    });
+  }
+
   start() {
     this.hero.reset();
     this.enemies.forEach((e) => e.kill());
@@ -63,8 +78,10 @@ export class Game {
         <p class="big">Survived ${m}:${s.toString().padStart(2, '0')}</p>
         <p>${this.kills} kills &middot; Level ${this.level}</p>
         <button id="restart">Restart</button>
+        <button id="to-title" class="ghost">Title</button>
       </div>`);
     hud.overlay.querySelector('#restart')!.addEventListener('click', () => this.start());
+    hud.overlay.querySelector('#to-title')!.addEventListener('click', () => this.showTitle());
   }
 
   update(dt: number) {
