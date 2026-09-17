@@ -6,6 +6,7 @@ import { Gem } from './gem';
 import { Pool } from './pool';
 import { spawnRate, hpScale, pickType } from './spawner';
 import * as hud from './hud';
+import { pickThree } from './upgrades';
 
 export type State = 'title' | 'playing' | 'levelup' | 'dead';
 
@@ -131,10 +132,37 @@ export class Game {
     if (this.xp >= xpToLevel(this.level)) {
       this.xp -= xpToLevel(this.level);
       this.level++;
+      this.levelUp();
     }
 
     this.shake = Math.max(0, this.shake - dt);
     this.syncHud();
+  }
+
+  levelUp() {
+    this.state = 'levelup';
+    const choices = pickThree();
+    hud.showOverlay(`
+      <div class="panel wide">
+        <h2>Level ${this.level}</h2>
+        <p>Choose an upgrade</p>
+        <div class="cards">
+          ${choices.map((u, i) => `
+            <button class="card" data-i="${i}">
+              <div class="icon">${u.icon}</div>
+              <div class="name">${u.name}</div>
+              <div class="desc">${u.desc}</div>
+            </button>`).join('')}
+        </div>
+      </div>`);
+    hud.overlay.querySelectorAll<HTMLButtonElement>('.card').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        choices[Number(btn.dataset.i)].apply(this.hero);
+        hud.hideOverlay();
+        this.state = 'playing';
+        this.syncHud();
+      });
+    });
   }
 
   fire() {

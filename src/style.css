@@ -20,3 +20,11 @@ html, body { margin: 0; height: 100%; overflow: hidden; background: #0b0e1a; fon
 .panel .big { font-size: 18px; color: #fff; }
 button { font: inherit; font-size: 16px; font-weight: 600; padding: 10px 22px; border-radius: 8px; border: 1px solid #2ec4b6; background: #2ec4b6; color: #08111a; cursor: pointer; margin-top: 14px; }
 button:hover { background: #4fe0d2; }
+
+.panel.wide { min-width: 640px; }
+.cards { display: flex; gap: 14px; justify-content: center; margin-top: 10px; }
+.card { width: 190px; padding: 18px 14px; background: #1c2440; border: 1px solid rgba(255,255,255,0.16); color: #e8e8f0; text-align: center; margin-top: 0; }
+.card:hover { background: #26305a; border-color: #2ec4b6; transform: translateY(-3px); }
+.card .icon { font-size: 34px; margin-bottom: 8px; }
+.card .name { font-weight: 700; font-size: 16px; color: #f2c94c; }
+.card .desc { font-size: 13px; color: #b8bdd0; margin-top: 6px; font-weight: 400; }

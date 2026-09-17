@@ -40,6 +40,7 @@ sun.shadow.camera.near = 1; sun.shadow.camera.far = 100;
 scene.add(sun);
 
 const game = new Game(scene);
+(window as any).game = game; // debug handle
 game.start();
 
 window.addEventListener('resize', () => {
