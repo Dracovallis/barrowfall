@@ -1,5 +1,6 @@
 import * as THREE from 'three';
-import { Hero, ARENA_RADIUS } from './hero';
+import { ARENA_RADIUS } from './hero';
+import { Game } from './game';
 
 const BG = 0x0b0e1a;
 
@@ -27,8 +28,7 @@ floor.receiveShadow = true;
 scene.add(floor);
 
 // Lights
-const hemi = new THREE.HemisphereLight(0x8fa3c7, 0x1a1a22, 0.7);
-scene.add(hemi);
+scene.add(new THREE.HemisphereLight(0x8fa3c7, 0x1a1a22, 0.7));
 const sun = new THREE.DirectionalLight(0xffffff, 1.6);
 sun.position.set(20, 40, 10);
 sun.castShadow = true;
@@ -39,7 +39,8 @@ sun.shadow.camera.top = s; sun.shadow.camera.bottom = -s;
 sun.shadow.camera.near = 1; sun.shadow.camera.far = 100;
 scene.add(sun);
 
-const hero = new Hero(scene);
+const game = new Game(scene);
+game.start();
 
 window.addEventListener('resize', () => {
   camera.aspect = innerWidth / innerHeight;
@@ -59,14 +60,20 @@ function frame(now: number) {
   acc += Math.min((now - last) / 1000, 0.25);
   last = now;
   while (acc >= STEP) {
-    hero.update(STEP);
+    game.update(STEP);
     acc -= STEP;
   }
-  camTarget.copy(hero.mesh.position).add(CAM_OFFSET);
+  const heroPos = game.hero.mesh.position;
+  camTarget.copy(heroPos).add(CAM_OFFSET);
   camera.position.lerp(camTarget, 0.08);
-  lookAt.copy(hero.mesh.position);
+  lookAt.copy(heroPos);
+  if (game.shake > 0) {
+    const k = game.shake * 1.6;
+    lookAt.x += (Math.random() - 0.5) * k;
+    lookAt.z += (Math.random() - 0.5) * k;
+  }
   camera.lookAt(lookAt);
   renderer.render(scene, camera);
 }
-camera.position.copy(hero.mesh.position).add(CAM_OFFSET);
+camera.position.copy(game.hero.mesh.position).add(CAM_OFFSET);
 requestAnimationFrame(frame);
