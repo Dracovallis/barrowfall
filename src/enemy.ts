@@ -60,7 +60,7 @@ export class Enemy {
     this.mesh.geometry = geoFor(type);
     this.mat.color.setHex(type.color);
     this.mat.emissive.setHex(0x000000);
-    this.hp = this.maxHp = Math.ceil(type.hp * hpScale);
+    this.hp = this.maxHp = Math.max(1, Math.round(type.hp * hpScale));
     this.flash = 0;
     this.dying = 0;
     this.vx = this.vz = 0;
