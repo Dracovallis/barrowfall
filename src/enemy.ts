@@ -33,6 +33,8 @@ function geoFor(t: EnemyType) {
 }
 
 export class Enemy {
+  static nextId = 1;
+  id = 0;
   active = false;
   mesh: THREE.Mesh;
   mat: THREE.MeshStandardMaterial;
@@ -53,6 +55,7 @@ export class Enemy {
 
   spawn(type: EnemyType, x: number, z: number, hpScale: number) {
     this.active = true;
+    this.id = Enemy.nextId++;
     this.type = type;
     this.mesh.geometry = geoFor(type);
     this.mat.color.setHex(type.color);

@@ -5,10 +5,17 @@ export const ARENA_RADIUS = 28;
 
 export class Hero {
   mesh: THREE.Mesh;
-  speed = 9;
   radius = 0.6;
+  // Stats (upgrades modify these)
+  speed = 9;
   hp = 100;
   maxHp = 100;
+  damage = 1;
+  fireInterval = 0.5; // seconds between volleys
+  projectiles = 1;
+  pierce = 0;
+  magnet = 2.5;
+  regen = 0; // hp per second
 
   constructor(scene: THREE.Scene) {
     const geo = new THREE.CapsuleGeometry(0.5, 0.9, 4, 10);
@@ -24,15 +31,27 @@ export class Hero {
     const p = this.mesh.position;
     p.x += a.x * this.speed * dt;
     p.z += a.z * this.speed * dt;
+    this.clamp();
+    if (a.x !== 0 || a.z !== 0) this.mesh.rotation.y = Math.atan2(a.x, a.z);
+    if (this.regen > 0) this.hp = Math.min(this.maxHp, this.hp + this.regen * dt);
+  }
+
+  clamp() {
+    const p = this.mesh.position;
     const d = Math.hypot(p.x, p.z);
     const max = ARENA_RADIUS - this.radius;
     if (d > max) { p.x *= max / d; p.z *= max / d; }
-    if (a.x !== 0 || a.z !== 0) this.mesh.rotation.y = Math.atan2(a.x, a.z);
   }
 
   reset() {
     this.mesh.position.set(0, 0.95, 0);
-    this.hp = this.maxHp = 100;
     this.speed = 9;
+    this.hp = this.maxHp = 100;
+    this.damage = 1;
+    this.fireInterval = 0.5;
+    this.projectiles = 1;
+    this.pierce = 0;
+    this.magnet = 2.5;
+    this.regen = 0;
   }
 }
