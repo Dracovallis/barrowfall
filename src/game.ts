@@ -7,7 +7,7 @@ import { Pool } from './pool';
 import { spawnRate, hpScale, pickType } from './spawner';
 import * as hud from './hud';
 import { pickThree } from './upgrades';
-import { titleHtml } from './title';
+import { titleHtml, fillBuildTime } from './title';
 import { onAnyKey, clearAnyKey } from './input';
 
 export type State = 'title' | 'playing' | 'levelup' | 'dead';
@@ -33,6 +33,7 @@ export class Game {
 
   constructor(public scene: THREE.Scene) {
     this.hero = new Hero(scene);
+    hud.homeBtn.addEventListener('click', () => this.showTitle());
     this.enemies = new Pool(() => new Enemy(scene), 80);
     this.projectiles = new Pool(() => new Projectile(scene), 60);
     this.gems = new Pool(() => new Gem(scene), 120);
@@ -42,6 +43,7 @@ export class Game {
     this.state = 'title';
     hud.showOverlay(titleHtml());
     hud.overlay.classList.add('is-title');
+    fillBuildTime(hud.overlay);
     clearAnyKey();
     onAnyKey(() => {
       if (this.state !== 'title') return;

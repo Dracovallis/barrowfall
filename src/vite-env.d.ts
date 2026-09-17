@@ -1,5 +1,4 @@
 /// <reference types="vite/client" />
 
-interface ImportMetaEnv {
-  readonly VITE_BUILD_HOURS?: string;
-}
+declare const __FIRST_COMMIT__: string;
+declare const __LAST_COMMIT__: string;

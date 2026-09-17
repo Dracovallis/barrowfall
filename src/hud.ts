@@ -5,8 +5,10 @@ hud.innerHTML = `
     <div class="bar xp"><div class="fill"></div><span class="label"></span></div>
     <div id="stats"><span id="timer">0:00</span><span id="kills">0 kills</span></div>
   </div>
+  <button id="home" title="Back to title">⌂ Home</button>
   <div id="overlay" class="hidden"></div>
 `;
+export const homeBtn = hud.querySelector<HTMLButtonElement>('#home')!;
 
 const hpFill = hud.querySelector<HTMLDivElement>('.hp .fill')!;
 const hpLabel = hud.querySelector<HTMLSpanElement>('.hp .label')!;

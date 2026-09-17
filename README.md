@@ -3,7 +3,7 @@
 A 3D arena-survivor built in the browser. Survive the waves, level up, choose upgrades.
 
 **Play:** https://barrowfall.netlify.app
-**Built in:** under 15 minutes from written concept to deployed build (first commit 14:10, last gameplay commit 14:19 on 2026-09-17) — see the commit log.
+**Built in:** ~11 minutes from written concept to a playable, deployed build (first commit 14:10, gameplay complete 14:19 on 2026-09-17). The title screen computes the live figure from the first and latest commit via the GitHub API.
 **Stack:** Three.js · TypeScript · Vite · Netlify
 **Workflow:** designed and built with Claude Code as the primary development tool.
 
